@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Peta CSR</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+
+html,body{
+margin:0;
+padding:0;
+height:100%;
+}
+
+#map{
+width:100%;
+height:100vh;
+}
+
+.info{
+position:absolute;
+top:10px;
+left:50px;
+background:white;
+padding:10px;
+z-index:999;
+border-radius:5px;
+box-shadow:0px 0px 10px rgba(0,0,0,.3);
+font-family:Arial;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="info">
+<b>Dashboard CSR</b><br>
+GeoJSON Polygon
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+var map=L.map('map').setView([-8.49,140.39],11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:22
+}).addTo(map);
+
+fetch('Gstudio_Map.geojson')
+.then(response=>response.json())
+.then(data=>{
+
+var geo=L.geoJSON(data,{
+
+style:function(feature){
+
+return{
+
+color:"#008000",
+weight:2,
+fillColor:"#00ff00",
+fillOpacity:0.5
+
+};
+
+},
+
+onEachFeature:function(feature,layer){
+
+layer.bindPopup(
+
+"<b>Desa :</b> "+feature.properties.DESA+
+"<br><b>Luasan :</b> "+feature.properties.LUASAN+
+"<br><b>Status :</b> "+feature.properties.STATUS
+
+);
+
+}
+
+}).addTo(map);
+
+map.fitBounds(geo.getBounds());
+
+});
+
+</script>
+
+</body>
+</html>
