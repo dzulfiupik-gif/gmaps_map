@@ -72,19 +72,38 @@ fetch('Gstudio_Map.geojson')
 
 var geo=L.geoJSON(data,{
 
-style:function(feature){
+style: function(feature){
+
+let warna = "#808080";
+
+if(feature.properties.STATUS){
+
+let status = feature.properties.STATUS.toUpperCase();
+
+if(status == "SELESAI")
+warna = "#00AA00";
+
+else if(status == "PROSES")
+warna = "#FFD700";
+
+else if(status == "BELUM SELESAI")
+warna = "#FF0000";
+
+}
 
 return{
 
-color:"#008000",
+color:"#444",
+
 weight:2,
-fillColor:"#00ff00",
-fillOpacity:0.5
+
+fillColor:warna,
+
+fillOpacity:0.65
 
 };
 
 },
-
 onEachFeature:function(feature,layer){
 
 layer.bindPopup(
